@@ -13,6 +13,59 @@
     dripping: false,
   };
 
+  /** Wet cloth plop on impact (Freesound CC0-style wet drop). */
+  const SPLAT_SRC = "assets/sfx/splat.mp3?v=3";
+  let splatAudio = null;
+  let audioUnlocked = false;
+
+  function getSplatAudio() {
+    if (!splatAudio) {
+      splatAudio = new Audio(SPLAT_SRC);
+      splatAudio.preload = "auto";
+      splatAudio.volume = 0.85;
+    }
+    return splatAudio;
+  }
+
+  /** iOS needs a user-gesture unlock before playback works. */
+  function unlockAudio() {
+    if (audioUnlocked) return;
+    audioUnlocked = true;
+    const a = getSplatAudio();
+    const prev = a.volume;
+    a.volume = 0.001;
+    const p = a.play();
+    if (p && typeof p.then === "function") {
+      p.then(() => {
+        a.pause();
+        a.currentTime = 0;
+        a.volume = prev;
+      }).catch(() => {
+        a.volume = prev;
+        audioUnlocked = false;
+      });
+    } else {
+      a.pause();
+      a.currentTime = 0;
+      a.volume = prev;
+    }
+  }
+
+  function playSplat(strength) {
+    const a = getSplatAudio();
+    try {
+      a.pause();
+      a.currentTime = 0;
+      // Soft throws quieter; hard near full volume
+      const s = typeof strength === "number" ? strength : 0.7;
+      a.volume = Math.min(1, 0.45 + s * 0.55);
+      const p = a.play();
+      if (p && typeof p.catch === "function") p.catch(() => {});
+    } catch (_) {
+      /* ignore autoplay blocks */
+    }
+  }
+
   const els = {
     tray: document.getElementById("pie-tray"),
     figure: document.getElementById("figure"),
@@ -677,6 +730,7 @@
           });
           showComicBurst();
           fly.classList.add("is-splatting");
+          playSplat(strength);
           playHitReact();
           els.hint.textContent = "Hit.";
           state.flying = false;
@@ -959,6 +1013,12 @@
     state.pies = await res.json();
     renderTray();
     bindStrength();
+    // Unlock audio on first interaction (iOS A2HS / Safari)
+    const unlockOnce = () => {
+      unlockAudio();
+      document.removeEventListener("pointerdown", unlockOnce, true);
+    };
+    document.addEventListener("pointerdown", unlockOnce, true);
     setStrength(0);
     updateArmPose(0);
     setIdle(true);
