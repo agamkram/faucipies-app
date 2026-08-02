@@ -13,57 +13,96 @@
     dripping: false,
   };
 
-  /** Wet cloth plop on impact (Freesound CC0-style wet drop). */
-  const SPLAT_SRC = "assets/sfx/splat.mp3?v=3";
-  let splatAudio = null;
+  /**
+   * Wet cloth plop on impact only.
+   * Web Audio: unlock with silent context.resume() (never plays the splat on pie select).
+   * Each hit is a fresh BufferSource so we don't get late/double/missing HTMLAudio races.
+   */
+  const SPLAT_SRC = "assets/sfx/splat.mp3?v=4";
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+  let splatBuffer = null;
+  let splatLoadPromise = null;
   let audioUnlocked = false;
 
-  function getSplatAudio() {
-    if (!splatAudio) {
-      splatAudio = new Audio(SPLAT_SRC);
-      splatAudio.preload = "auto";
-      splatAudio.volume = 0.85;
-    }
-    return splatAudio;
+  function ensureAudioCtx() {
+    if (!AudioCtx) return null;
+    if (!audioCtx) audioCtx = new AudioCtx();
+    return audioCtx;
   }
 
-  /** iOS needs a user-gesture unlock before playback works. */
+  function loadSplatBuffer() {
+    const ctx = ensureAudioCtx();
+    if (!ctx) return Promise.resolve(null);
+    if (splatBuffer) return Promise.resolve(splatBuffer);
+    if (splatLoadPromise) return splatLoadPromise;
+    splatLoadPromise = fetch(SPLAT_SRC)
+      .then((r) => {
+        if (!r.ok) throw new Error("splat fetch failed");
+        return r.arrayBuffer();
+      })
+      .then((ab) => {
+        // Promise form is standard; copy buffer so decode can take ownership safely
+        return ctx.decodeAudioData(ab.slice(0));
+      })
+      .then((buf) => {
+        splatBuffer = buf;
+        return buf;
+      })
+      .catch(() => {
+        splatLoadPromise = null;
+        return null;
+      });
+    return splatLoadPromise;
+  }
+
+  /** iOS/Safari: resume context on a user gesture — no audible sound. */
   function unlockAudio() {
     if (audioUnlocked) return;
+    const ctx = ensureAudioCtx();
+    if (!ctx) {
+      audioUnlocked = true;
+      return;
+    }
     audioUnlocked = true;
-    const a = getSplatAudio();
-    const prev = a.volume;
-    a.volume = 0.001;
-    const p = a.play();
-    if (p && typeof p.then === "function") {
-      p.then(() => {
-        a.pause();
-        a.currentTime = 0;
-        a.volume = prev;
-      }).catch(() => {
-        a.volume = prev;
+    const resume = ctx.state === "suspended" ? ctx.resume() : Promise.resolve();
+    Promise.resolve(resume)
+      .then(() => loadSplatBuffer())
+      .catch(() => {
         audioUnlocked = false;
       });
-    } else {
-      a.pause();
-      a.currentTime = 0;
-      a.volume = prev;
-    }
   }
 
   function playSplat(strength) {
-    const a = getSplatAudio();
-    try {
-      a.pause();
-      a.currentTime = 0;
-      // Soft throws quieter; hard near full volume
-      const s = typeof strength === "number" ? strength : 0.7;
-      a.volume = Math.min(1, 0.45 + s * 0.55);
-      const p = a.play();
-      if (p && typeof p.catch === "function") p.catch(() => {});
-    } catch (_) {
-      /* ignore autoplay blocks */
+    const ctx = ensureAudioCtx();
+    const s = typeof strength === "number" ? strength : 0.7;
+    const vol = Math.min(1, 0.45 + s * 0.55);
+
+    function startFromBuffer(buf) {
+      if (!ctx || !buf) return false;
+      try {
+        if (ctx.state === "suspended") ctx.resume();
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        const gain = ctx.createGain();
+        gain.gain.value = vol;
+        src.connect(gain);
+        gain.connect(ctx.destination);
+        src.start(0);
+        return true;
+      } catch (_) {
+        return false;
+      }
     }
+
+    if (splatBuffer) {
+      startFromBuffer(splatBuffer);
+      return;
+    }
+    // Buffer still loading (first throw right after unlock) — play when ready
+    loadSplatBuffer().then((buf) => {
+      if (buf) startFromBuffer(buf);
+    });
   }
 
   const els = {
