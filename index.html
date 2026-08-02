@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+  />
+  <meta name="theme-color" content="#9eb9ce" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="FauciPies" />
+  <meta name="application-name" content="FauciPies" />
+  <meta name="description" content="Throw labeled pies. Cream reveals the story." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Mark Maga" />
+  <meta property="og:title" content="FauciPies" />
+  <meta property="og:description" content="Throw labeled pies. Cream reveals the story." />
+  <meta property="og:url" content="https://faucispies.markmaga.com/" />
+  <meta property="og:image" content="https://faucispies.markmaga.com/icon-512.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="FauciPies" />
+  <meta name="twitter:description" content="Throw labeled pies. Cream reveals the story." />
+  <meta name="twitter:image" content="https://faucispies.markmaga.com/icon-512.png" />
+  <!-- Touch icons EARLY — iOS Share/A2HS often ignores late links.
+       Cache-bust (?v=) so Safari doesn’t keep a failed letter-glyph (F) attempt.
+       Prefer HTTP :8851 for local A2HS icon tests (self-signed HTTPS often drops icons). -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png?v=2" />
+  <link rel="apple-touch-icon" sizes="167x167" href="/apple-touch-icon-167x167.png?v=2" />
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png?v=2" />
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png?v=2" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
+  <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-precomposed.png?v=2" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png?v=2" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png?v=2" />
+  <link rel="manifest" href="/manifest.webmanifest?v=2" />
+  <title>FauciPies</title>
+  <script>
+    /* iOS A2HS Bug B — Desktop/Bottom:full bleed.txt
+       Phone: screen taller than inner → fill to screen height.
+       iPad: screen undershoots → add safe-area extra. */
+    (function () {
+      var n = window.navigator;
+      var standalone =
+        n.standalone === true ||
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.matchMedia("(display-mode: fullscreen)").matches;
+      if (!standalone) return;
+      var root = document.documentElement;
+      root.classList.add("pwa-standalone");
+      var iw = window.innerWidth || 0;
+      var ih = window.innerHeight || 0;
+      var sw = window.screen.width || 0;
+      var sh = window.screen.height || 0;
+      var screenMax = Math.max(sw, sh);
+      var screenMin = Math.min(sw, sh);
+      var fillH = ih >= iw ? Math.max(ih, screenMax) : Math.max(ih, screenMin);
+      var extra = 0;
+      if (Math.min(iw, ih) >= 600 && screenMax < ih - 10) {
+        extra = 20;
+      }
+      var total = fillH + extra;
+      var shortfall = Math.max(0, total - ih);
+      root.style.setProperty("--pwa-fill-h", fillH + "px");
+      root.style.setProperty("--pwa-extra-b", extra + "px");
+      root.style.setProperty("--pwa-shortfall", shortfall + "px");
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=story21" />
+</head>
+<body>
+  <div id="fit-stage" class="fit-stage">
+    <div id="app" class="app">
+      <header class="brand-bar">
+        <h1 class="brand">Fauci Pies</h1>
+        <p class="tagline">Pick a pie. Wind up. Let fly.</p>
+      </header>
+
+      <section class="stage" aria-label="Pie throwing stage">
+        <div class="stage-bg" aria-hidden="true"></div>
+        <div class="cream-flecks-bg" id="cream-flecks-bg" aria-hidden="true"></div>
+
+        <div class="figure-wrap" id="figure-wrap">
+          <div class="figure is-idle" id="figure">
+            <div class="figure-motion" id="figure-motion">
+              <div class="subject" id="head">
+                <img
+                  class="face"
+                  src="assets/fauci-face.png?v=subject2"
+                  alt="Anthony Fauci"
+                  draggable="false"
+                  width="648"
+                  height="1534"
+                />
+                <div class="pie-splat" id="pie-splat" aria-hidden="true" hidden></div>
+                <div class="face-splat" id="face-splat" aria-hidden="true" hidden>
+                  <div class="splat-rim" aria-hidden="true"></div>
+                  <img
+                    class="splat-tin"
+                    src="assets/pie-crust-bottom.png?v=subject6"
+                    alt=""
+                    draggable="false"
+                  />
+                  <div class="splat-drips" aria-hidden="true">
+                    <span class="drip drip-a"></span>
+                    <span class="drip drip-b"></span>
+                    <span class="drip drip-c"></span>
+                    <span class="drip drip-d"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Splatter UI parked while we tune flight/impact mechanics -->
+          <div class="splat-burst" id="splat-burst" aria-hidden="true" hidden></div>
+        </div>
+
+        <div class="cream-flecks" id="cream-flecks" aria-hidden="true"></div>
+
+        <div class="comic-burst" id="comic-burst" aria-hidden="true" hidden>
+          <svg class="comic-burst-outline" viewBox="0 0 120 88" aria-hidden="true">
+            <polygon
+              class="comic-burst-ring-outer"
+              fill="none"
+              points="60,2 72,14 92,4 88,22 116,18 102,34 118,46 100,52 114,70 90,66 94,84 74,74 62,86 52,72 34,84 30,66 8,72 18,54 2,48 16,36 4,22 26,24 22,6 42,14"
+            />
+            <polygon
+              class="comic-burst-ring-inner"
+              fill="none"
+              points="60,2 72,14 92,4 88,22 116,18 102,34 118,46 100,52 114,70 90,66 94,84 74,74 62,86 52,72 34,84 30,66 8,72 18,54 2,48 16,36 4,22 26,24 22,6 42,14"
+            />
+          </svg>
+          <span class="comic-burst-text" id="comic-burst-text"></span>
+        </div>
+
+        <!-- Story sheet: appears after splat beat (hybrid) -->
+        <aside class="story-sheet" id="story-sheet" aria-live="polite" hidden>
+          <div class="story-sheet-inner">
+            <p class="story-label" id="story-label"></p>
+            <p class="story-blurb" id="story-blurb"></p>
+          </div>
+        </aside>
+
+        <div class="thrower" id="thrower" aria-hidden="true">
+          <div class="arm" id="arm">
+            <div class="hand-pie" id="hand-pie" hidden>
+              <div class="pie-disc">
+                <img class="pie-img" src="assets/pie.png?v=subject5" alt="" draggable="false" />
+                <span class="pie-label-text" id="hand-pie-label"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flying-pie" id="flying-pie" hidden>
+          <div class="pie-flip" id="pie-flip">
+            <div class="pie-side pie-side-top">
+              <div class="pie-disc">
+                <img class="pie-img" src="assets/pie.png?v=subject5" alt="" draggable="false" />
+                <span class="pie-label-text" id="fly-pie-label"></span>
+              </div>
+            </div>
+            <div class="pie-side pie-side-bottom" aria-hidden="true">
+              <img class="pie-img pie-tin-img" src="assets/pie-crust-bottom.png?v=subject6" alt="" draggable="false" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Throw controls">
+        <div class="strength-block">
+          <div class="strength-labels">
+            <span>Soft</span>
+            <span class="strength-title">Throw</span>
+            <span>Hard</span>
+          </div>
+          <div
+            class="strength-track"
+            id="strength-track"
+            role="slider"
+            tabindex="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            aria-label="Throw strength from soft to hard"
+          >
+            <div class="strength-fill" id="strength-fill"></div>
+            <div class="strength-thumb" id="strength-thumb"></div>
+          </div>
+          <p class="hint" id="hint">Drag the slider to wind up, then release to throw.</p>
+        </div>
+
+        <div class="tray-wrap">
+          <div class="tray" id="pie-tray" role="listbox" aria-label="Pie labels"></div>
+        </div>
+      </section>
+      <!-- PWA only: absorbs screen-vs-layout shortfall so stage framing matches Safari -->
+      <div class="pwa-shortfall" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <script src="fit-to-screen.js"></script>
+  <script src="app.js?v=story23"></script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+[
+  {
+    "id": "vaccine-injuries",
+    "label": "Vaccine Injuries",
+    "blurb": "Fauci’s relentless promotion of the shots as universally safe, while quietly acknowledging private concerns and later dismissing emerging injury reports as anecdotal noise, left thousands of Americans to suffer myocarditis, neurological damage, and worse with almost no institutional support. By treating legitimate adverse-event data as a threat to the narrative rather than a signal to investigate, he helped create a climate where injured people were gaslit by media and medicine alike, further shredding public faith that “the science” actually protects them.",
+    "source": {
+      "title": "CDC: VAERS overview",
+      "url": "https://www.cdc.gov/vaccine-safety/vaccinesafety/vaers.html"
+    }
+  },
+  {
+    "id": "military-discharges",
+    "label": "Military Discharges",
+    "blurb": "Under the banner of Fauci’s vaccine absolutism, the U.S. military discharged thousands of trained service members for refusing an experimental shot whose transmission-blocking claims were already collapsing. The result was a self-inflicted readiness crisis and a lasting message that institutional loyalty now required submission to one man’s shifting medical orthodoxy, deepening the rift between those who still trust official health decrees and those who no longer will.",
+    "source": {
+      "title": "Military Times: Troops separated over vaccine mandate",
+      "url": "https://www.militarytimes.com/news/pentagon-congress/2023/01/13/heres-how-many-troops-have-been-kicked-out-for-refusing-the-covid-vaccine/"
+    }
+  },
+  {
+    "id": "learning-loss",
+    "label": "Learning Loss",
+    "blurb": "Fauci’s early and sustained support for prolonged school closures produced measurable educational damage, especially among poorer children, that will echo for decades. The refusal to weigh that cost honestly against the relatively low risk to healthy kids revealed a hierarchy of concerns in which institutional caution ranked above children’s futures.",
+    "source": {
+      "title": "NAEP: Long-term trend assessment declines",
+      "url": "https://www.nationsreportcard.gov/highlights/ltt/2022/"
+    }
+  },
+  {
+    "id": "vaccine-mandates",
+    "label": "Vaccine Mandates",
+    "blurb": "Fauci publicly blessed the coercive architecture that turned workplaces, schools, and travel into checkpoints for an injection whose benefits he had overstated. The mandates he cheered created a two-tier society of the compliant and the excluded, while the mainstream press treated resistance as moral failure rather than a rational response to broken promises, locking in cultural bitterness that still poisons civic life.",
+    "source": {
+      "title": "Supreme Court on OSHA vaccine-or-test rule",
+      "url": "https://www.supremecourt.gov/opinions/21pdf/21a244_hgci.pdf"
+    }
+  },
+  {
+    "id": "nursing-homes",
+    "label": "Nursing Homes",
+    "blurb": "Guidance that prioritized hospital capacity over the concentrated vulnerability of nursing-home residents contributed to catastrophic death tolls among the elderly in multiple states. Fauci’s failure to sound a clear, early alarm about that specific risk, followed by later silence, left the most fragile population paying the highest price for institutional hesitation and political convenience.",
+    "source": {
+      "title": "NYT: Nursing homes and COVID deaths",
+      "url": "https://www.nytimes.com/interactive/2020/05/09/us/coronavirus-cases-nursing-homes-us.html"
+    }
+  },
+  {
+    "id": "vaccine-safety",
+    "label": "Vaccine Safety",
+    "blurb": "From the earliest rollout, Fauci projected absolute confidence in the shots’ safety profile even as pharmacovigilance systems filled with signals he preferred to minimize. That posture of unassailable certainty, later protected by silence when challenged under oath, taught a generation that official safety assurances are provisional and that questioning them is treated as heresy.",
+    "source": {
+      "title": "NEJM: Myocarditis after mRNA vaccination",
+      "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2110475"
+    }
+  },
+  {
+    "id": "business-closures",
+    "label": "Business Closures",
+    "blurb": "Fauci’s endorsement of extended lockdowns helped shutter hundreds of thousands of small businesses, many permanently, while large corporations and remote-capable elites weathered the storm. The selective economic destruction, sold as science, deepened class and geographic resentments that mainstream coverage still prefers to ignore.",
+    "source": {
+      "title": "BLS: COVID-19 impact on employment",
+      "url": "https://www.bls.gov/covid19/effects-of-covid-19-pandemic-on-employment-and-unemployment-statistics.htm"
+    }
+  },
+  {
+    "id": "vaccine-effectiveness",
+    "label": "Vaccine Effectiveness",
+    "blurb": "Fauci repeatedly claimed the vaccines would stop infection and transmission long after internal data and real-world results showed otherwise. The gap between his public slogans and the accumulating evidence forced ordinary people to choose between lived experience and the television experts still repeating his lines, accelerating the collapse of shared reality.",
+    "source": {
+      "title": "CDC MMWR on vaccine effectiveness",
+      "url": "https://www.cdc.gov/mmwr/volumes/71/wr/mm7104e1.htm"
+    }
+  },
+  {
+    "id": "mental-health",
+    "label": "Mental Health",
+    "blurb": "The isolation, fear messaging, and social fracturing encouraged by Fauci’s guidance correlated with sharp rises in anxiety, depression, and youth suicide. When the same officials who amplified existential dread later expressed mild regret without accountability, they confirmed that psychological harm ranked low on their list of priorities.",
+    "source": {
+      "title": "CDC: Youth mental health during COVID-19",
+      "url": "https://www.cdc.gov/healthyyouth/mental-health/index.htm"
+    }
+  },
+  {
+    "id": "natural-immunity",
+    "label": "Natural Immunity",
+    "blurb": "While data from multiple countries showed prior infection conferred robust protection, Fauci and his allies treated natural immunity as an inconvenient footnote rather than a central fact. By sidelining it in guidance and policy, he prolonged unnecessary restrictions and reinforced the impression that only pharmaceutical interventions counted as legitimate science.",
+    "source": {
+      "title": "CDC: Science brief on SARS-CoV-2 infection-induced immunity",
+      "url": "https://www.cdc.gov/coronavirus/2019-ncov/science/science-briefs/vaccine-induced-immunity.html"
+    }
+  },
+  {
+    "id": "hospital-protocols",
+    "label": "Hospital Protocols",
+    "blurb": "Standardized treatment protocols influenced by federal guidance—remdesivir first, early outpatient options discouraged—produced outcomes many frontline physicians later described as iatrogenic. The top-down rigidity Fauci helped legitimize discouraged clinical judgment and turned hospitals into high-mortality funnels for a subset of patients.",
+    "source": {
+      "title": "NIH COVID-19 Treatment Guidelines",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK570371/"
+    }
+  },
+  {
+    "id": "herd-immunity",
+    "label": "Herd Immunity",
+    "blurb": "Fauci freely adjusted the numerical threshold for herd immunity in public interviews, raising the percentage whenever it suited the vaccination campaign. The casual goalpost-moving, presented as settled science, revealed how political objectives could rewrite epidemiological language in real time and left citizens wondering what other numbers were negotiable.",
+    "source": {
+      "title": "WHO on herd immunity and COVID-19",
+      "url": "https://www.who.int/news-room/questions-and-answers/item/herd-immunity-lockdowns-and-covid-19"
+    }
+  },
+  {
+    "id": "ivermectin",
+    "label": "Ivermectin",
+    "blurb": "Fauci’s public dismissal of ivermectin as a “horse dewormer,” despite ongoing studies and physician reports, helped poison the well against a cheap, widely available drug. The rhetorical contempt, amplified by media, ensured that any positive signal would be treated as conspiracy rather than data worth examining, further polarizing medicine itself.",
+    "source": {
+      "title": "FDA: Why you should not use ivermectin to treat COVID-19",
+      "url": "https://www.fda.gov/consumers/consumer-updates/why-you-should-not-use-ivermectin-treat-or-prevent-covid-19"
+    }
+  },
+  {
+    "id": "institutional-trust",
+    "label": "Institutional Trust",
+    "blurb": "More than any single policy, Fauci’s combination of overconfidence, shifting claims, and eventual retreat into the Fifth Amendment has done lasting damage to the credibility of public-health institutions themselves. When the most visible face of American science refuses to answer basic questions under oath, the residual trust many still place in official pronouncements becomes harder to justify.",
+    "source": {
+      "title": "Gallup: Confidence in U.S. institutions",
+      "url": "https://news.gallup.com/poll/1597/confidence-institutions.aspx"
+    }
+  },
+  {
+    "id": "ventilator-protocols",
+    "label": "Ventilator Protocols",
+    "blurb": "Early in the pandemic, aggressive intubation guidance aligned with the prevailing expert consensus Fauci represented correlated with extremely high mortality among ventilated patients. The later quiet shift away from that approach received far less publicity than the original confident recommendations, another instance of science updating without the original authorities absorbing responsibility.",
+    "source": {
+      "title": "JAMA: Early invasive ventilation debates",
+      "url": "https://jamanetwork.com/journals/jama/fullarticle/2765303"
+    }
+  },
+  {
+    "id": "face-masks",
+    "label": "Face Masks",
+    "blurb": "Fauci’s early statement that masks were unnecessary for the public, followed by a rapid reversal and later advocacy for masking toddlers, became a textbook case of messaging that tracked politics and supply more than consistent evidence. The flip-flops, never fully explained with humility, trained the public to treat every new recommendation as provisional and possibly instrumental.",
+    "source": {
+      "title": "Cochrane review: Physical interventions to interrupt respiratory viruses",
+      "url": "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD006207.pub6/full"
+    }
+  },
+  {
+    "id": "hydroxychloroquine",
+    "label": "Hydroxy Chloroquine",
+    "blurb": "After initially treating hydroxychloroquine as a plausible option, Fauci pivoted to aggressive skepticism once it became politically radioactive. The episode taught observers that the same expert could move from open-mindedness to near-total rejection in weeks when media and political winds shifted, undermining claims of pure evidence-based consistency.",
+    "source": {
+      "title": "NEJM: Hydroxychloroquine in COVID-19",
+      "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2022926"
+    }
+  },
+  {
+    "id": "school-closures",
+    "label": "School Closures",
+    "blurb": "Fauci’s reluctance to push hard for rapid school reopening, despite evidence from Europe and elsewhere, prolonged closures that inflicted educational and social harm far exceeding the risk to most children. The prolonged caution, defended as science, revealed a striking indifference to the developmental costs borne by the young.",
+    "source": {
+      "title": "UNESCO: Global monitoring of school closures",
+      "url": "https://covid19.uis.unesco.org/global-monitoring-school-closures-covid19/"
+    }
+  },
+  {
+    "id": "remdesivir",
+    "label": "Remdesivir",
+    "blurb": "Fauci championed remdesivir as a key therapeutic even as its mortality benefit remained marginal and its cost high. The preference for an expensive patented drug over cheaper repurposed options reinforced long-standing suspicions that institutional incentives and scientific judgment had become difficult to separate.",
+    "source": {
+      "title": "WHO Solidarity trial remdesivir findings",
+      "url": "https://www.who.int/news/item/15-10-2020-solidarity-therapeutics-trial-produces-conclusive-evidence-on-the-effectiveness-of-repurposed-drugs-for-covid-19"
+    }
+  },
+  {
+    "id": "children-risks",
+    "label": "Children Risks",
+    "blurb": "Fauci repeatedly emphasized theoretical risks to children while downplaying the far lower actual severity in healthy kids, helping justify policies that treated childhood as an acceptable sacrifice zone. That imbalance between rhetoric and data left many parents feeling that official science had stopped weighing trade-offs honestly.",
+    "source": {
+      "title": "CDC: COVID-19 risk in children",
+      "url": "https://www.cdc.gov/covid/risk-factors/index.html"
+    }
+  },
+  {
+    "id": "lab-leak",
+    "label": "Lab Leak",
+    "blurb": "From the earliest weeks, Fauci participated in efforts to steer the scientific and public conversation away from a laboratory origin even while private communications showed the possibility was taken seriously. The coordinated messaging, later protected by silence under oath, left the question of pandemic origins under a permanent cloud of institutional self-protection.",
+    "source": {
+      "title": "Science: Proximal origin paper",
+      "url": "https://www.science.org/doi/10.1126/science.abb9107"
+    }
+  },
+  {
+    "id": "social-distancing",
+    "label": "Social Distancing",
+    "blurb": "The six-foot rule that Fauci later admitted “sort of just appeared” without rigorous studies became the spatial foundation for countless closures and restrictions. That an arbitrary number could reshape American life for years, while its originator eventually shrugged, is one of the clearer demonstrations of how thin evidence can be elevated into unchallengeable dogma.",
+    "source": {
+      "title": "CDC archive: Social distancing basics",
+      "url": "https://archive.cdc.gov/#/details?url=https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/social-distancing.html"
+    }
+  },
+  {
+    "id": "lockdowns",
+    "label": "Lockdowns",
+    "blurb": "Fauci’s support for broad societal shutdowns, maintained long after the initial emergency window, helped normalize the idea that governments may suspend ordinary life indefinitely on expert say-so. The social, economic, and psychological wreckage that followed still receives less official accounting than the virus itself.",
+    "source": {
+      "title": "Nature: The effect of large-scale anti-contagion policies",
+      "url": "https://www.nature.com/articles/s41586-020-2404-8"
+    }
+  },
+  {
+    "id": "pcr-testing",
+    "label": "PCR Testing",
+    "blurb": "By accepting and amplifying high cycle-threshold PCR results that often detected non-infectious fragments, Fauci helped inflate case counts that justified continued emergency measures. The technical detail was rarely explained to the public, allowing a laboratory parameter to drive policy while most citizens remained unaware of the distinction between infection and contagiousness.",
+    "source": {
+      "title": "NYT: Your coronavirus test is positive. Maybe it shouldn’t be.",
+      "url": "https://www.nytimes.com/2020/08/29/health/coronavirus-testing.html"
+    }
+  },
+  {
+    "id": "gain-function",
+    "label": "Gain Function",
+    "blurb": "Fauci’s long-standing defense of gain-of-function research, coupled with semantic denials about specific Wuhan funding, created the appearance of an official who would rather obscure risk than confront it. The refusal to speak plainly about experiments that enhance pathogenicity has left a permanent question mark over whether the same institutions can be trusted to police the most dangerous research.",
+    "source": {
+      "title": "NIH statement on gain-of-function research",
+      "url": "https://www.nih.gov/about-nih/who-we-are/nih-director/statements/statement-misinformation-about-sars-cov-2-origins"
+    }
+  },
+  {
+    "id": "clinical-trials",
+    "label": "Clinical Trials",
+    "blurb": "Despite controlling major research budgets, Fauci oversaw almost no high-quality randomized trials of the non-pharmaceutical interventions he recommended most forcefully. The absence of rigorous testing for masks, distancing, and school policies left the country flying blind while the same authorities spoke with unearned certainty.",
+    "source": {
+      "title": "FDA: Emergency Use Authorization for vaccines explained",
+      "url": "https://www.fda.gov/vaccines-blood-biologics/vaccines/emergency-use-authorization-vaccines-explained"
+    }
+  },
+  {
+    "id": "eco-health",
+    "label": "Eco Health",
+    "blurb": "The EcoHealth Alliance grants that flowed through NIAID to the Wuhan Institute of Virology placed U.S. taxpayer money in a high-risk laboratory with inadequate oversight. Fauci’s subsequent efforts to downplay the significance of that relationship, rather than demand full transparency, reinforced the sense that institutional reputation ranked higher than public accounting.",
+    "source": {
+      "title": "House Select Subcommittee on the Coronavirus Pandemic: EcoHealth",
+      "url": "https://oversight.house.gov/release/new-evidence-shows-ecohealth-alliance-wuhan-institute-of-virology-collaborators-engaged-in-high-risk-coronavirus-research/"
+    }
+  },
+  {
+    "id": "public-guidance",
+    "label": "Public Guidance",
+    "blurb": "Fauci’s evolving public statements—delivered with the same tone of settled authority whether the underlying evidence was strong or weak—trained institutions and media to treat his voice as synonymous with science itself. When that guidance later required quiet revision, the original confidence was rarely revisited, leaving a residue of cynicism.",
+    "source": {
+      "title": "CDC COVID-19 guidance archive",
+      "url": "https://www.cdc.gov/covid/prevention/index.html"
+    }
+  },
+  {
+    "id": "dual-use",
+    "label": "Dual Use",
+    "blurb": "For years Fauci argued that the benefits of research with pandemic potential outweighed the risks of laboratory accidents or misuse. That philosophical stance, maintained even after a possible catastrophic example, suggests a worldview in which the research enterprise’s momentum is treated as more important than the public’s right to strict risk limits.",
+    "source": {
+      "title": "NSABB: Dual use research of concern",
+      "url": "https://osp.od.nih.gov/policies/national-science-advisory-board-for-biosecurity-nsabb/"
+    }
+  },
+  {
+    "id": "noble-lies",
+    "label": "Noble Lies",
+    "blurb": "Whether on masks, thresholds, or risk communication, Fauci and his circle sometimes appeared to calibrate statements for compliance rather than maximal transparency. Each instance of apparent “noble lying” taught attentive observers that official science might be subordinated to behavioral management, a realization corrosive to any future emergency response.",
+    "source": {
+      "title": "NYT: Fauci on masks and mixed messages",
+      "url": "https://www.nytimes.com/2020/07/12/us/politics/fauci-masks.html"
+    }
+  },
+  {
+    "id": "dissent-suppression",
+    "label": "Dissent Suppression",
+    "blurb": "Fauci’s circle worked to frame legitimate scientific disagreement—on origins, early treatment, and focused protection—as dangerous misinformation. The resulting chill on open debate, cheered by major media, replaced the normal competitive process of science with a managed consensus that proved brittle when reality diverged.",
+    "source": {
+      "title": "Great Barrington Declaration",
+      "url": "https://gbdeclaration.org/"
+    }
+  },
+  {
+    "id": "fifth-pleadings",
+    "label": "111 Pleadings of the Fifth",
+    "blurb": "When finally confronted under oath with the full weight of the questions his decisions had raised, Fauci invoked the Fifth Amendment over and over—111 times by count—rather than provide the accounting the public had earned. That spectacle of a man who once demanded trust and compliance now refusing to answer basic questions about his own record stands as the final, clarifying act: the same authority that reshaped American life for years would not submit to the scrutiny he once expected every citizen to accept.",
+    "source": {
+      "title": "Senate hearing coverage: Fauci’s Fifth Amendment invocations",
+      "url": "https://www.forbes.com/sites/alisondurkee/2024/06/21/fauci-pleads-fifth-dozens-of-times-in-closed-door-covid-hearing-house-republicans-say/"
+    }
+  }
+]

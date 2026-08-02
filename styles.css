@@ -1,0 +1,1340 @@
+:root {
+  --bg-deep: #6f96b0;
+  --bg-mid: #9eb9ce;
+  --cream: #fff6e8;
+  --cream-shadow: #e8d9c4;
+  --crust: #c47a3a;
+  --crust-dark: #8a4e1c;
+  --ink: #3b1418;
+  --berry: #8b1e2d;
+  --sneaker: #ffe14a;
+  --sneaker-trim: #1e1a14;
+  --coat: #f4f1ec;
+  --pants: #1c2430;
+  --stage-glow: #a8c8dc;
+  --brand: #ffe8a8;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --control-h: 210px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  background: var(--bg-deep);
+  color: var(--cream);
+  font-family: "Libre Baskerville", Georgia, serif;
+  overflow: hidden;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+.fit-stage {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: stretch center;
+  overflow: hidden;
+  background: var(--bg-deep);
+}
+
+.app {
+  /* Never use 100vw — Safari’s vw is wider than the visible screen and clips the left. */
+  width: 100%;
+  max-width: 480px;
+  min-width: 0;
+  height: 100%;
+  max-height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  /* Stay invisible until phone layout has settled (avoids low→up jump) */
+  opacity: 0;
+  visibility: hidden;
+  transform-origin: center center;
+  justify-self: center;
+}
+
+/* PWA Bug B: fill screen height, but park the shortfall UNDER controls
+   so the stage/face framing matches Safari (not stretched). */
+html.pwa-standalone,
+html.pwa-standalone body {
+  height: calc(var(--pwa-fill-h, 100%) + var(--pwa-extra-b, 0px));
+  min-height: calc(var(--pwa-fill-h, 100%) + var(--pwa-extra-b, 0px));
+  max-height: none;
+}
+
+html.pwa-standalone .fit-stage {
+  height: calc(var(--pwa-fill-h, 100%) + var(--pwa-extra-b, 0px));
+  min-height: calc(var(--pwa-fill-h, 100%) + var(--pwa-extra-b, 0px));
+  max-height: none;
+  top: 0;
+  bottom: auto;
+}
+
+html.pwa-standalone .app {
+  height: calc(var(--pwa-fill-h, 100%) + var(--pwa-extra-b, 0px));
+  min-height: calc(var(--pwa-fill-h, 100%) + var(--pwa-extra-b, 0px));
+  max-height: none;
+}
+
+.pwa-shortfall {
+  display: none;
+  flex: 0 0 auto;
+  height: 0;
+  background: rgb(48, 78, 99);
+  pointer-events: none;
+}
+
+html.pwa-standalone .pwa-shortfall {
+  display: block;
+  flex: 0 0 var(--pwa-shortfall, 0px);
+  height: var(--pwa-shortfall, 0px);
+}
+
+.app.is-fitted.is-ready {
+  opacity: 1;
+  visibility: visible;
+}
+
+.brand-bar {
+  flex: 0 0 auto;
+  padding-top: calc(10px + var(--safe-top));
+  padding-bottom: 6px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  text-align: center;
+  z-index: 5;
+}
+
+.brand {
+  margin: 0;
+  font-family: Bangers, Impact, sans-serif;
+  font-size: clamp(2.4rem, 11vw, 3.4rem);
+  letter-spacing: 0.04em;
+  color: #fff8e4;
+  text-shadow:
+    0 3px 0 #3a5a72,
+    0 8px 24px rgba(30, 60, 85, 0.35);
+  line-height: 1;
+}
+
+.tagline {
+  margin: 4px 0 0;
+  font-size: 0.78rem;
+  color: rgba(30, 55, 75, 0.72);
+  font-style: italic;
+}
+
+.stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.stage-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 36%, rgba(220, 236, 246, 0.75), transparent 70%),
+    linear-gradient(180deg, #c5dceb 0%, #9eb9ce 48%, #7a9fb8 100%);
+}
+
+.stage-bg::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 6%;
+  height: 18%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(40, 70, 95, 0.22), transparent 70%);
+  filter: blur(2px);
+}
+
+/* Settled flecks on the stage backdrop — stay put while he rocks */
+.cream-flecks-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* In-flight flecks (stage space) */
+.cream-flecks {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.cream-fleck {
+  position: absolute;
+  width: var(--s, 8px);
+  height: var(--h, var(--s, 8px));
+  margin: calc(var(--h, var(--s, 8px)) / -2) 0 0 calc(var(--s, 8px) / -2);
+  border-radius: var(--r, 70% 25% 55% 40% / 30% 60% 35% 65%);
+  background:
+    radial-gradient(circle at 32% 28%, #fff 0 34%, transparent 62%),
+    radial-gradient(ellipse 70% 85% at 58% 62%, var(--cream) 0 58%, var(--cream-shadow) 100%);
+  box-shadow: inset 0 -1px 2px rgba(160, 130, 90, 0.3);
+  opacity: 0.95;
+  will-change: left, top, transform;
+  pointer-events: none;
+}
+
+.cream-fleck.is-settled {
+  will-change: auto;
+  opacity: 0.92;
+}
+
+.subject > .cream-fleck {
+  z-index: 5;
+}
+
+/* Batman / comics impact burst — hollow jagged ring + floating word */
+.comic-burst {
+  position: absolute;
+  top: 4.5%;
+  z-index: 13;
+  width: min(34%, 128px);
+  aspect-ratio: 1.38;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: transparent;
+  opacity: 0;
+  transform: scale(0.35) rotate(-8deg);
+}
+
+.comic-burst-outline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.comic-burst-ring-outer {
+  stroke: #ffe34a;
+  stroke-width: 5.5;
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+}
+
+.comic-burst-ring-inner {
+  stroke: #1a1208;
+  stroke-width: 2.4;
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+}
+
+.comic-burst.is-left {
+  left: 5%;
+  right: auto;
+  transform: scale(0.35) rotate(-12deg);
+}
+
+.comic-burst.is-right {
+  right: 5%;
+  left: auto;
+  transform: scale(0.35) rotate(10deg);
+}
+
+.comic-burst[hidden] {
+  display: none !important;
+}
+
+.comic-burst.is-pop {
+  animation: comic-burst-pop 0.48s cubic-bezier(0.15, 1.35, 0.4, 1) forwards;
+}
+
+.comic-burst.is-left.is-pop {
+  animation-name: comic-burst-pop-left;
+}
+
+.comic-burst.is-right.is-pop {
+  animation-name: comic-burst-pop-right;
+}
+
+@keyframes comic-burst-pop-left {
+  0% {
+    opacity: 0;
+    transform: scale(0.25) rotate(-18deg);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.08) rotate(-8deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-6deg);
+  }
+}
+
+@keyframes comic-burst-pop-right {
+  0% {
+    opacity: 0;
+    transform: scale(0.25) rotate(18deg);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.08) rotate(8deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(6deg);
+  }
+}
+
+.comic-burst-text {
+  position: relative;
+  z-index: 1;
+  font-family: Bangers, Impact, sans-serif;
+  font-size: clamp(1.75rem, 7.5vw, 2.05rem);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: #c2182b;
+  -webkit-text-stroke: 1.15px #1a1208;
+  paint-order: stroke fill;
+  text-shadow:
+    0 1px 0 #fff8e0,
+    1px 2px 0 rgba(26, 18, 8, 0.35);
+  transform: rotate(-4deg);
+  line-height: 1;
+  text-align: center;
+  padding: 6%;
+}
+
+.figure-wrap {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  width: min(78%, 300px);
+  height: 78%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.figure {
+  position: absolute;
+  inset: 0;
+  /* Match wobble 0% so first paint doesn’t jump into the animation */
+  transform: rotate(-2.2deg) translateX(-3px);
+  transform-origin: 50% 92%;
+}
+
+.figure.is-idle {
+  animation: figure-wobble 2.8s ease-in-out infinite;
+}
+
+.figure.is-paused {
+  animation-play-state: paused;
+}
+
+.figure-motion {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 42%;
+}
+
+.figure-motion.is-hit {
+  animation: figure-hit 0.42s cubic-bezier(0.2, 0.85, 0.3, 1);
+}
+
+@keyframes figure-wobble {
+  0%,
+  100% {
+    transform: rotate(-2.2deg) translateX(-3px);
+  }
+  50% {
+    transform: rotate(2.4deg) translateX(4px);
+  }
+}
+
+@keyframes figure-hit {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  22% {
+    /* Shock recoil — sudden shove from the pie */
+    transform: translate(-14px, 6px) rotate(-8deg) scale(0.96, 1.04);
+  }
+  55% {
+    transform: translate(5px, -2px) rotate(3deg) scale(1.02, 0.98);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+}
+
+/* Full-body subject sticker (Desktop Subject.png) */
+.subject {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 88%;
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: 4;
+}
+
+.face {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  display: block;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.35));
+}
+
+/* Circumferential cream around landed tin — irregular, gravity-biased low */
+.pie-splat {
+  position: absolute;
+  width: 0;
+  height: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.pie-splat[hidden] {
+  display: none !important;
+}
+
+.splat-glob {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--s, 10px);
+  height: var(--h, var(--s, 10px));
+  margin: calc(var(--h, var(--s, 10px)) / -2) 0 0 calc(var(--s, 10px) / -2);
+  border-radius: var(--r, 60% 40% 55% 45% / 50% 45% 55% 50%);
+  background:
+    radial-gradient(circle at 38% 32%, #fffef9 0 35%, transparent 62%),
+    radial-gradient(circle at 50% 55%, var(--cream) 0 58%, var(--cream-shadow) 88%);
+  box-shadow: inset 0 -2px 3px rgba(170, 140, 100, 0.28);
+  opacity: 0;
+  transform: translate(var(--x), var(--y)) scale(0.25) rotate(var(--spin, 0deg));
+  animation: rim-glob-in 0.34s cubic-bezier(0.2, 1.1, 0.35, 1) var(--delay, 0ms) forwards;
+}
+
+.splat-glob.is-heavy {
+  filter: saturate(0.97);
+}
+
+.splat-drip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--dw, 4px);
+  height: 0;
+  margin-left: calc(var(--dw, 4px) / -2);
+  border-radius: 40% 40% 55% 55% / 15% 15% 85% 85%;
+  background: linear-gradient(180deg, #fff 0%, var(--cream) 55%, var(--cream-shadow));
+  box-shadow: inset -1px 0 2px rgba(170, 140, 100, 0.25);
+  opacity: 0;
+  transform: translate(var(--x), var(--y));
+  transform-origin: 50% 0%;
+  animation: rim-drip-in 0.45s ease-out var(--delay, 80ms) forwards;
+}
+
+@keyframes rim-glob-in {
+  0% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) scale(0.2) rotate(var(--spin, 0deg));
+  }
+  70% {
+    opacity: 1;
+    transform: translate(var(--x), var(--y)) scale(1.05) rotate(var(--spin, 0deg));
+  }
+  100% {
+    opacity: 0.96;
+    transform: translate(var(--x), var(--y)) scale(1) rotate(var(--spin, 0deg));
+  }
+}
+
+@keyframes rim-drip-in {
+  0% {
+    opacity: 0;
+    height: 0;
+  }
+  40% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0.9;
+    height: var(--len, 12px);
+  }
+}
+
+.face-splat {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 1.5%;
+  height: 26%;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.2);
+  transform-origin: 50% 42%;
+  z-index: 5;
+  filter: drop-shadow(0 4px 8px rgba(30, 25, 20, 0.35));
+}
+
+/* Cream forced out around the tin rim — diameter only, not a face cloud */
+.splat-rim {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: -2%;
+  height: 82%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.splat-rim::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 20deg,
+    rgba(255, 250, 242, 0.95) 0 18deg,
+    transparent 18deg 40deg,
+    rgba(255, 246, 232, 0.9) 40deg 62deg,
+    transparent 62deg 88deg,
+    rgba(232, 217, 196, 0.85) 88deg 110deg,
+    transparent 110deg 145deg,
+    rgba(255, 252, 245, 0.92) 145deg 170deg,
+    transparent 170deg 205deg,
+    rgba(255, 246, 232, 0.88) 205deg 230deg,
+    transparent 230deg 265deg,
+    rgba(232, 217, 196, 0.9) 265deg 290deg,
+    transparent 290deg 325deg,
+    rgba(255, 250, 242, 0.95) 325deg 350deg,
+    transparent 350deg 360deg
+  );
+  -webkit-mask: radial-gradient(
+    circle closest-side at 50% 50%,
+    transparent 0 70%,
+    #000 76% 92%,
+    transparent 98%
+  );
+  mask: radial-gradient(
+    circle closest-side at 50% 50%,
+    transparent 0 70%,
+    #000 76% 92%,
+    transparent 98%
+  );
+}
+
+.splat-rim::after {
+  content: "";
+  position: absolute;
+  width: 16%;
+  aspect-ratio: 1.1;
+  left: 2%;
+  top: 42%;
+  border-radius: 55% 45% 50% 50%;
+  background: radial-gradient(circle at 40% 35%, #fff, var(--cream) 60%, transparent 72%);
+  box-shadow:
+    78px -18px 0 -2px rgba(255, 248, 236, 0.9),
+    92px 22px 0 -4px rgba(232, 217, 196, 0.85),
+    40px 48px 0 -3px rgba(255, 250, 242, 0.88);
+}
+
+.splat-tin {
+  position: absolute;
+  left: 10%;
+  top: 2%;
+  width: 80%;
+  height: 74%;
+  object-fit: contain;
+  z-index: 1;
+  transform: scale(1.02, 0.9) rotate(-4deg);
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
+}
+
+.splat-drips {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 58%;
+  height: 55%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.drip {
+  position: absolute;
+  top: 0;
+  width: var(--dw, 10px);
+  height: 0;
+  border-radius: 40% 40% 55% 55% / 20% 20% 80% 80%;
+  background: linear-gradient(
+    180deg,
+    #fff 0%,
+    var(--cream) 45%,
+    var(--cream-shadow) 100%
+  );
+  box-shadow: inset -2px 0 3px rgba(180, 150, 110, 0.25);
+  opacity: 0;
+  transform-origin: 50% 0%;
+}
+
+.drip-a {
+  left: 18%;
+  --dw: 9px;
+  --drip-h: 42%;
+  --drip-delay: 0.12s;
+}
+.drip-b {
+  left: 38%;
+  --dw: 13px;
+  --drip-h: 62%;
+  --drip-delay: 0.22s;
+}
+.drip-c {
+  left: 58%;
+  --dw: 8px;
+  --drip-h: 36%;
+  --drip-delay: 0.18s;
+}
+.drip-d {
+  left: 74%;
+  --dw: 11px;
+  --drip-h: 50%;
+  --drip-delay: 0.3s;
+}
+
+.face-splat.is-on {
+  animation: face-splat-impact 0.65s cubic-bezier(0.12, 1.35, 0.4, 1) forwards;
+}
+
+.face-splat.is-on .drip {
+  animation: drip-grow 0.9s ease-out var(--drip-delay, 0.15s) forwards;
+}
+
+.face-splat.is-on.is-dripping,
+.face-splat.is-dripping {
+  animation: cream-drip 1.05s ease-in forwards;
+}
+
+.face-splat.is-on.is-dripping .drip,
+.face-splat.is-dripping .drip {
+  animation: drip-fall 0.85s ease-in forwards;
+}
+
+@keyframes face-splat-impact {
+  0% {
+    opacity: 0.45;
+    transform: scale(0.28, 0.18) rotate(-10deg);
+  }
+  28% {
+    opacity: 1;
+    transform: scale(1.28, 0.88) rotate(5deg);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(0.94, 1.06) rotate(-2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(var(--splat-scale, 1)) rotate(0deg);
+  }
+}
+
+@keyframes drip-grow {
+  0% {
+    opacity: 0;
+    height: 0;
+  }
+  30% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0.9;
+    height: var(--drip-h, 45%);
+  }
+}
+
+@keyframes drip-fall {
+  0% {
+    opacity: 0.9;
+    transform: translateY(0) scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(120%) scaleY(1.35);
+  }
+}
+
+/* Flying cream + crust spray on impact */
+.splat-burst {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.splat-blob {
+  position: absolute;
+  width: var(--blob-size, 18px);
+  height: var(--blob-h, var(--blob-size, 18px));
+  margin: calc(var(--blob-h, var(--blob-size, 18px)) / -2) 0 0
+    calc(var(--blob-size, 18px) / -2);
+  left: var(--x, 50%);
+  top: var(--y, 40%);
+  border-radius: var(--blob-radius, 60% 40% 55% 45% / 50% 45% 55% 50%);
+  background: var(
+    --blob-bg,
+    radial-gradient(circle at 35% 30%, #fff, var(--cream) 55%, var(--cream-shadow))
+  );
+  box-shadow: inset 0 -3px 5px rgba(180, 150, 110, 0.35);
+  opacity: 0;
+  animation: splat-blob-arc var(--dur, 0.75s) cubic-bezier(0.2, 0.55, 0.35, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+  --dx: 0px;
+  --dy: 0px;
+  --mid-x: 0px;
+  --mid-y: 0px;
+  --spin: 0deg;
+  --end-scale: 0.7;
+}
+
+.splat-blob.is-crust {
+  box-shadow: inset 0 -2px 3px rgba(80, 40, 10, 0.35);
+}
+
+@keyframes splat-blob-arc {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.4) rotate(0deg);
+  }
+  35% {
+    opacity: 1;
+    transform: translate(var(--mid-x), var(--mid-y)) scale(1.05) rotate(calc(var(--spin) * 0.4));
+  }
+  78% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(var(--end-scale)) rotate(var(--spin));
+  }
+}
+
+.flying-pie.is-splatting {
+  /* Land settle only — size comes from inline transform / --arrive-scale */
+  animation: pie-impact-land 0.28s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+  z-index: 9;
+}
+
+.flying-pie.is-landed {
+  z-index: 6;
+  pointer-events: none;
+  will-change: auto;
+}
+
+.subject > .flying-pie {
+  z-index: 6;
+}
+
+.subject > .pie-splat {
+  z-index: 5;
+}
+
+.flying-pie.is-splatting .pie-label-text,
+.flying-pie.is-landed .pie-label-text {
+  opacity: 0;
+}
+
+@keyframes pie-impact-land {
+  0% {
+    transform: translate(-50%, -50%) scale(var(--arrive-scale, 0.45))
+      rotate(var(--impact-rot, 0deg));
+  }
+  40% {
+    transform: translate(-50%, -50%)
+      scale(var(--arrive-scale, 0.45), calc(var(--arrive-scale, 0.45) * 0.78))
+      rotate(calc(var(--impact-rot, 0deg) + 3deg));
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(var(--arrive-scale, 0.45))
+      rotate(var(--impact-rot, 0deg));
+  }
+}
+
+/* Hybrid story sheet — after splat beat, clean bottom caption (not cream chrome) */
+.story-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 12;
+  max-height: min(46%, 280px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 16px;
+  box-sizing: border-box;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.story-sheet[hidden] {
+  display: none !important;
+}
+
+.story-sheet.is-visible:not([hidden]) {
+  pointer-events: auto;
+  animation: story-sheet-in 0.42s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+.story-sheet.is-out:not([hidden]) {
+  animation: story-sheet-out 0.28s ease-in forwards;
+}
+
+@keyframes story-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes story-sheet-out {
+  to {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.story-sheet-inner {
+  margin: 0 0 calc(6px + var(--safe-bottom));
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 12px 14px 11px;
+  border-radius: 16px 16px 12px 12px;
+  background: linear-gradient(165deg, rgba(36, 48, 62, 0.94), rgba(22, 30, 40, 0.96));
+  border: 1px solid rgba(255, 232, 168, 0.18);
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.35);
+  color: var(--cream);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  max-height: min(42vh, 260px);
+}
+
+.story-label {
+  margin: 0 0 8px;
+  font-family: Bangers, Impact, sans-serif;
+  font-size: clamp(1.15rem, 5vw, 1.45rem);
+  letter-spacing: 0.03em;
+  color: var(--brand);
+  text-align: center;
+  line-height: 1.05;
+}
+
+.story-blurb {
+  margin: 0;
+  font-size: clamp(0.72rem, 3vw, 0.84rem);
+  line-height: 1.45;
+  color: rgba(255, 246, 232, 0.9);
+  text-align: left;
+}
+
+/* Legacy cream-frame styles kept unused below */
+
+.cream-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.cream-frame-edge {
+  position: absolute;
+  inset: 0;
+  border-radius: 28px 34px 30px 36px / 32px 28px 34px 30px;
+  background:
+    radial-gradient(circle at 8% 12%, #fff 0 14%, transparent 15%),
+    radial-gradient(circle at 92% 18%, #fff 0 12%, transparent 13%),
+    radial-gradient(circle at 14% 88%, var(--cream) 0 16%, transparent 17%),
+    radial-gradient(circle at 86% 84%, #fff 0 15%, transparent 16%),
+    radial-gradient(circle at 50% 4%, var(--cream) 0 10%, transparent 11%),
+    radial-gradient(circle at 50% 96%, var(--cream-shadow) 0 12%, transparent 13%),
+    linear-gradient(145deg, #fffef8 0%, var(--cream) 45%, var(--cream-shadow) 100%);
+  box-shadow:
+    inset 0 0 0 10px rgba(255, 255, 255, 0.55),
+    inset 0 0 0 18px rgba(232, 217, 196, 0.65),
+    0 14px 28px rgba(0, 0, 0, 0.35);
+  filter: drop-shadow(0 2px 0 rgba(255, 255, 255, 0.35));
+}
+
+.cream-frame-edge::before,
+.cream-frame-edge::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, var(--cream) 60%, var(--cream-shadow));
+  box-shadow: inset 0 -4px 8px rgba(180, 150, 110, 0.3);
+}
+
+.cream-frame-edge::before {
+  width: 22%;
+  aspect-ratio: 1;
+  top: -6%;
+  left: 10%;
+  transform: rotate(-12deg);
+}
+
+.cream-frame-edge::after {
+  width: 18%;
+  aspect-ratio: 1;
+  bottom: -5%;
+  right: 12%;
+  transform: rotate(18deg);
+}
+
+.cream-tail {
+  position: absolute;
+  left: 50%;
+  bottom: -7%;
+  width: 16%;
+  aspect-ratio: 1.1;
+  transform: translateX(-50%);
+  background: radial-gradient(circle at 40% 30%, #fff, var(--cream) 70%);
+  border-radius: 40% 40% 50% 50%;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.cream-tail::after {
+  content: "";
+  position: absolute;
+  left: 38%;
+  bottom: -55%;
+  width: 45%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle at 40% 30%, #fff, var(--cream));
+  border-radius: 50%;
+}
+
+.cream-content {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 7% 8% 9%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px 10px;
+  text-align: center;
+  color: var(--ink);
+  overflow: hidden;
+  border-radius: 18px;
+  background: rgba(255, 252, 245, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(139, 30, 45, 0.08);
+}
+
+.cream-label {
+  margin: 0;
+  flex: 0 0 auto;
+  font-family: Bangers, Impact, sans-serif;
+  font-size: clamp(1.25rem, 5.5vw, 1.7rem);
+  letter-spacing: 0.03em;
+  color: var(--berry);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  transform: rotate(-1.5deg);
+}
+
+.cream-blurb {
+  margin: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  font-size: clamp(0.78rem, 3.2vw, 0.95rem);
+  line-height: 1.45;
+  color: var(--ink);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  text-align: left;
+  padding: 0 2px;
+}
+
+.cream-source {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  margin-top: 2px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(59, 20, 24, 0.18);
+}
+
+.source-link {
+  font-size: 0.68rem;
+  color: #5a2a18;
+  text-decoration: underline;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.copy-btn {
+  appearance: none;
+  border: 1px solid rgba(59, 20, 24, 0.35);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--berry);
+  font-family: Bangers, Impact, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.copy-btn.copied {
+  background: var(--berry);
+  color: #fff;
+}
+
+.thrower {
+  position: absolute;
+  right: 2%;
+  bottom: 16%;
+  width: 38%;
+  height: 40%;
+  z-index: 6;
+  pointer-events: none;
+  transform-origin: 80% 90%;
+}
+
+.arm {
+  position: absolute;
+  inset: 0;
+  transform-origin: 70% 85%;
+  transition: transform 0.05s linear;
+}
+
+.arm::before {
+  content: none;
+}
+
+.hand-pie {
+  position: absolute;
+  left: 8%;
+  top: 8%;
+  width: 84%;
+  aspect-ratio: 1;
+  transform-origin: 50% 50%;
+  z-index: 2;
+  filter: drop-shadow(4px 14px 12px rgba(20, 40, 60, 0.4));
+}
+
+.hand-pie[hidden] {
+  display: none !important;
+}
+
+.pie-disc {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+}
+
+.pie-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.pie-label-text {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 78%;
+  max-width: 78%;
+  font-family: Bangers, Impact, sans-serif;
+  font-size: clamp(0.7rem, 2.8vw, 0.95rem);
+  color: var(--berry);
+  text-align: center;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+}
+
+.pie-label-line {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.flying-pie {
+  position: absolute;
+  width: 22%;
+  aspect-ratio: 1;
+  z-index: 8;
+  pointer-events: none;
+  will-change: left, top, transform;
+  perspective: 800px;
+}
+
+.pie-flip {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform: rotateX(0deg);
+}
+
+.pie-side {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.pie-side-top {
+  transform: rotateX(0deg);
+}
+
+.pie-side-bottom {
+  transform: rotateX(180deg);
+}
+
+.pie-side-bottom .pie-tin-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+}
+
+.flying-pie .pie-disc {
+  width: 100%;
+  height: 100%;
+}
+
+.controls {
+  flex: 0 0 auto;
+  min-width: 0;
+  padding-top: 8px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background: linear-gradient(180deg, rgba(90, 130, 155, 0.15), rgba(55, 90, 115, 0.92) 22%);
+  z-index: 10;
+  overflow: visible;
+}
+
+.strength-block {
+  margin-bottom: 8px;
+}
+
+.strength-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: Bangers, Impact, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 232, 168, 0.85);
+  margin-bottom: 6px;
+}
+
+.strength-title {
+  color: var(--cream);
+  opacity: 0.55;
+  font-size: 0.75rem;
+}
+
+.strength-track {
+  position: relative;
+  height: 36px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #3d2a1c, #8a3a22 55%, #c44a28);
+  border: 1px solid rgba(255, 220, 160, 0.2);
+  touch-action: none;
+  cursor: grab;
+  overflow: hidden;
+}
+
+.strength-track:active {
+  cursor: grabbing;
+}
+
+.strength-track.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.strength-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 14px; /* aligns with thumb center at rest */
+  background: linear-gradient(90deg, rgba(255, 240, 200, 0.15), rgba(255, 200, 120, 0.35));
+  pointer-events: none;
+}
+
+.strength-thumb {
+  position: absolute;
+  top: 50%;
+  /* Rest at left, fully on-track (center inset by half thumb = 14px) */
+  left: 14px;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff8e8, #f0c070);
+  border: 2px solid #5a2a12;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.hint {
+  margin: 6px 2px 0;
+  font-size: 0.68rem;
+  color: rgba(255, 246, 232, 0.55);
+  font-style: italic;
+  min-height: 1.1em;
+}
+
+.tray-wrap {
+  overflow: visible;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.tray {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Bottom pad must clear pie disc + drop-shadow (overflow-x forces y clip) */
+  padding: 8px 2px 14px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.tray::-webkit-scrollbar {
+  height: 4px;
+}
+
+.tray::-webkit-scrollbar-thumb {
+  background: rgba(255, 200, 120, 0.35);
+  border-radius: 4px;
+}
+
+.pie-chip {
+  flex: 0 0 auto;
+  width: 72px;
+  scroll-snap-align: start;
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0 0 2px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.pie-chip .pie-disc {
+  width: 72px;
+  height: 72px;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.pie-chip .pie-label-text {
+  font-size: 0.62rem;
+}
+
+.pie-chip.is-selected .pie-disc,
+.pie-chip:focus-visible .pie-disc {
+  transform: translateY(-3px) scale(1.04);
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+}
+
+.pie-chip.is-selected,
+.pie-chip:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+.pie-chip:disabled {
+  opacity: 0.4;
+}
+
+@media (min-width: 768px) {
+  .app {
+    width: 420px;
+    max-width: 100%;
+    max-height: min(920px, 100%);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .cream-blurb {
+    font-size: 0.7rem;
+  }
+}

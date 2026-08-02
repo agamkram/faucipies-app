@@ -1,0 +1,8 @@
+.DS_Store
+*.pyc
+__pycache__/
+.vercel
+.local-cert.pem
+.local-key.pem
+.tmp-*
+*.tmp
